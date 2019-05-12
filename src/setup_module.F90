@@ -50,8 +50,8 @@ contains
     PRINT 300, 'Print Scale: ', printScale
     call read_initFileReal('advection.init', 'CFL', CFL)
     PRINT 300, 'CFL condition parameter: ', CFL
-    call read_initFileReal('advection.init', 'threshold', threshold)
-    PRINT 400, 'Threshold value for solution convergence: ', threshold
+    !!call read_initFileReal('advection.init', 'threshold', threshold)
+    !!PRINT 400, 'Threshold value for solution convergence: ', threshold
     !! Import parameters of problem.
     call read_initFileReal ('advection.init', 'left_speed', left_speed)
     PRINT 300, 'Velocity of the advection of the left part: ', left_speed
@@ -92,7 +92,7 @@ contains
     !!PRINT 100, 'The inner boundary condition of x3 direction is: ', x3_outer
 
 100 FORMAT(A70,A15)
-200 FORMAT(A70,I10)
+200 FORMAT(A70,I7)
 300 FORMAT(A70,F7.3)
 400 FORMAT(A70,F10.9)
 500 FORMAT(A70,I1)

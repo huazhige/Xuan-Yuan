@@ -16,36 +16,37 @@
 !! Don't change anything in this file.
 module write_data
 
-  use setup_module, only : runName
+  use setup_module, only : problem, method, slope_type, nx1, nghost
   implicit none
 
 contains
 
-  subroutine writeDiff(nIter, printCell)
+  subroutine write_out(nIter, dx1_array, u)
     implicit none
-    integer, intent(IN) :: length
-    real, dimension(:), intent(IN) :: x,f,residual
+    integer, intent(IN) :: nIter
+    real, dimension(:), intent(IN) :: dx1_array, u
     integer :: i
     character(len=35) :: ofile
 
     !! File name for ascii output
-    ofile = 'rootFinder_'//trim(runName)//'.dat'
+    ofile = "./output/"//trim(problem)//"_"//&
+            trim(slope_type)//'.dat'
 
     !! File open
-    open(unit=20,file=ofile,status='unknown')
+    open(unit = 20, file = ofile, status='unknown')
 
     !! Write into a file:
-    !!   iteration number, search result x, function value f(x), and residual
-    do i=1,length
-       write(20,920)i,x(i),f(i),residual(i)
+    !! iteration number, search result x, function value f(x), and residual
+    do i = nghost + 1, nx1 + nghost , 1
+       write(20,920) i , dx1_array(i), u(i)
     end do
 
     !! Output format specifiers
-920 format(1x, i5, f16.8, 1x, f16.8, 1x, f16.12)
+920 format(1x, i5, f16.8, 1x, f16.8)
 
     !! File close
     close(20)
 
-  end subroutine output_write
+  end subroutine write_out
 
-end module output_module
+end module write_data

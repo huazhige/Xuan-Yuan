@@ -32,17 +32,16 @@ program advection
   !! Begining of the real implementation of the driver
   !! define usages of module variables and subroutines
 
-  use mesh_init,           only: setGrids, dx1
+  use mesh_init,           only: setGrids, dx1, dx1_array
   use advect_init,         only: advection_init
   use new_time_step,       only: new_dt
   use calculate_fluxes,    only: calculate_flux
   use add_flux_divergence, only: add_flux_div
   use boundary,            only: set_boundary
+  use write_data,          only: write_out
 
   use setup_module,        only: setup_init, nx1, limit_dt, limit_time, &
-                           threshold, problem, reconstruction, printScale, &
-                           nghost
-  !!use advect_update,  only: advectUpdate
+                           printScale, nghost
 
   implicit none
 
@@ -73,35 +72,28 @@ program advection
 
   !! Initialize the initial condition and boundary conditions for the ghost cell.
   call advection_init(u,w)
-  u = w
-  call set_boundary(w,u)
+  call set_boundary(u)
+  w = u
   !! Task List
   do while ( ( nIter .lt. limit_dt ) .and. ( time .lt. limit_time ) )
     !! Step I: Compute the new time step.
     call new_dt(u,dx1,dt)
-    print *, dt
     !! Calculate the simulation time.
     time = time + dt
     !! Step II: Calculate flux at cell interfces.
     call calculate_flux(w,flux,dt)
     !! Step III: Add flux divergence.
     call add_flux_div(u,flux,dt)
-    !! Step IV: Conservative variables to Primitive variables.
+    !! Step IV: Setup ghost cells for boundary condition.
+    call set_boundary(u)
+    !! Step V: Conservative variables to Primitive variables.
     w = u
-    !! Step V: Setup ghost cells for boundary condition.
-    call set_boundary(w,u)
     !! Step VI: Output variable of each time step.
     !! Step VII: Update iterator.
     nIter = nIter + 1
-    print *, u
-    print *, "============================="
   end do
-  !! Print the data
-  !!printT = INT(printScale * (nIter - 1))
-  !!printCell = cells(:, printT)
 
-  !!open(11, file = './output/advection_cell.dat')
-  !!write(11, *) printCell
-  !!close(11)
+  !! Output the data.
+  call write_out(nIter, dx1_array, u)
 
 end program advection

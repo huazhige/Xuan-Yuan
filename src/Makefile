@@ -24,7 +24,8 @@ OBJS  = advection.o \
 	calculate_fluxes.o \
 	riemann_solver.o \
 	add_flux_div.o \
-	bc.o
+	bc.o \
+	write_data.o
 
 .PHONY: clean
 ########################################################################################
@@ -58,7 +59,7 @@ debug: $(EXE_FILE)
 #######################################################################################
 #LET'S DEFINE SOME MODULE DEPENDENCIES!
 advection.o: setup_module.o mesh_init.o advect_init.o cfl.o calculate_fluxes.o \
-	           add_flux_div.o bc.o
+	           add_flux_div.o bc.o write_data.o
 
 setup_module.o : read_initFile_module.o
 
@@ -75,6 +76,8 @@ riemann_solver.o: setup_module.o mesh_init.o
 add_flux_div.o: setup_module.o mesh_init.o
 
 bc.o: setup_module.o
+
+write_data.o: setup_module.o
 
 
 #######################################################################################

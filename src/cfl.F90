@@ -32,10 +32,10 @@ contains
     !! Set the iterator.
     integer :: i
     !! Set the new time step.
-    dt = CFL * dx1 / u(1)
+    dt = CFL * dx1 / ABS(u(1))
 
     do i = 1, nx1, 1
-     temp_dt = CFL * dx1 / u(i)
+     temp_dt = CFL * dx1 / ABS(u(i))
      if ( temp_dt .lt. dt ) then
        dt = temp_dt
      end if

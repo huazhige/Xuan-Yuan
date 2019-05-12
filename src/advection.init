@@ -1,27 +1,21 @@
-<Numerical-Method>
-method_type         fromm
 
-<Time-Domain>
+<Output>           
 CFL                 0.9
-limit_dt            10
-limit_time          100
+limit_time          0.3
+limit_dt            2
 
-<Mesh>
+<Mesh>             
 x1_beg              0.0
 x1_end              1.0
-threshold           0.001
-nx1                 64
+nx1                 32
 nghost              2
 x1_inner_bc         outflow
 x1_outer_bc         outflow
 
-<Output>
-printScale          1.0
-
-<Problem>
-problem             shock
+<Problem>          
+problem             sin_wave
 reconstruction      2
-slope_type          van_leer
+slope_type          mc_limiter
 method              TVD
 left_speed          2
-right_speed         1
+right_speed         -1

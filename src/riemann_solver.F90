@@ -144,7 +144,7 @@ contains
     !! Compute the primitive variable at the right cell interface.
     do i = 1, nx1 + 1, 1
       !! Computer the shock speed.
-      shock_s  = 0.5 * ( w(i + nghost) + w(i + nghost + 1) )
+      shock_s  = 0.5 * ( w(i + nghost - 1) + w(i + nghost) )
       !! Compute primitive variables at left cell interfaces.
       wr(i) = w(i + nghost - 1) + 0.5 * dx1 * slope(i) * &
               (1 - shock_s * dt/dx1)
@@ -167,10 +167,10 @@ contains
       else if ( w(i) .lt. w(i+1) ) then
         !! 0 < U_{i}^{n}
         if ( w(i) .ge. character_s ) then
-          flux( i - nghost + 1 ) = 0.5 * wr(i)**2.
+          flux( i - nghost + 1 ) = 0.5 * wr(i - nghost + 1)**2.
         !! U_{i+1}^{n} > 0
         else if ( w(i+1) .le. character_s ) then
-          flux( i - nghost + 1 ) = 0.5 * wl(i+1)**2.
+          flux( i - nghost + 1 ) = 0.5 * wl(i - nghost + 1)**2.
         !! U_{i}^{n} < 0 < U_{i+1}^{n}
         else if ( (w(i) .lt. character_s) .and. &
                 (w(i+1) .gt. character_s) ) then
@@ -268,7 +268,7 @@ contains
     !! Compute the primitive variable at the right cell interface.
     do i = 1, nx1 + 1, 1
       !! Computer the shock speed.
-      shock_s  = 0.5 * ( w(i + nghost) + w(i + nghost + 1) )
+      shock_s  = 0.5 * ( w(i + nghost - 1) + w(i + nghost) )
       !! Compute primitive variables at left cell interfaces.
       wr(i) = w(i + nghost - 1) + 0.5 * dx1 * slope(i) * &
               (1 - shock_s * dt/dx1)
@@ -291,10 +291,10 @@ contains
       else if ( w(i) .lt. w(i+1) ) then
         !! 0 < U_{i}^{n}
         if ( w(i) .ge. character_s ) then
-          flux( i - nghost + 1 ) = 0.5 * wr(i)**2.
+          flux( i - nghost + 1 ) = 0.5 * wr(i - nghost + 1)**2.
         !! U_{i+1}^{n} > 0
         else if ( w(i+1) .le. character_s ) then
-          flux( i - nghost + 1 ) = 0.5 * wl(i+1)**2.
+          flux( i - nghost + 1 ) = 0.5 * wl(i - nghost + 1)**2.
         !! U_{i}^{n} < 0 < U_{i+1}^{n}
         else if ( (w(i) .lt. character_s) .and. &
                 (w(i+1) .gt. character_s) ) then

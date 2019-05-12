@@ -47,13 +47,12 @@ contains
     !! Problem Generator
     if ( problem .eq. 'sin_wave' ) then
       !! Set the initial condition for the propagation of sinusoidal wave.
-      print *, dx1_array
-      w = SIN(2 * pi * dx1_array)
+      u = 1.5 * SIN(2 * pi * dx1_array) + 2
     else if ( problem .eq. "shock" ) then
       !! set the initial condition for the propagation of shock.
-      w = right_speed
+      u = right_speed
       do i = 1, int(nx1/2.) + nghost, 1
-        w(i) = left_speed
+        u(i) = left_speed
       end do
     end if
 
